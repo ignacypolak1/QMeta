@@ -30,10 +30,11 @@ qt_add_resources(qMetaApp "configuration"
         qtquickcontrols2.conf
 )
 
+target_include_directories(qMetaApp PUBLIC ${PROJECT_BINARY_DIR})
+
 target_link_libraries(qMetaApp 
     PUBLIC
         Exiv2::exiv2lib
-
     PRIVATE
         Qt6::Core
         Qt6::Gui

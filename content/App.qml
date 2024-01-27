@@ -128,6 +128,30 @@ Window {
                       color: Qt.rgba(0,0,0,0.2)
                       border.color: Qt.rgba(0.549,0.549,0.549,0.6)
                       border.width: 1
+
+                      ListView {
+                        id: metadataListView
+                        anchors.fill: parent
+                        model: ListModel {
+                            id: metadataModel
+                        }
+
+                        Component.onCompleted: {
+                            var metadata = fileModel.fileMetadata
+                            for (var key in metadata) {
+                                metadataModel.append({"key": key,"value": metadata[key]})
+                            }
+                        }
+
+                        delegate: Rectangle {
+                            width: parent.width
+                            height: 30
+                            Row {
+                                Text { text: model.key + ": " }
+                                Text { text: model.value }
+                            }
+                        }
+                      }
                   }
               }
           }

@@ -24,7 +24,8 @@ int main(int argc, char *argv[])
         &engine,
         &QQmlApplicationEngine::objectCreated,
         &app,
-        [url](QObject *obj, const QUrl &objUrl) {
+        [url](QObject *obj, const QUrl &objUrl)
+        {
             if (!obj && url == objUrl)
                 QCoreApplication::exit(-1);
         },
@@ -33,15 +34,16 @@ int main(int argc, char *argv[])
     engine.addImportPath(QCoreApplication::applicationDirPath() + "/qml");
     engine.addImportPath(":/");
 
-    FileModel* fileModel = new FileModel();
-    FileExplorerController* controller = new FileExplorerController(fileModel);
+    FileModel *fileModel = new FileModel();
+    FileExplorerController *controller = new FileExplorerController(fileModel);
 
     engine.rootContext()->setContextProperty("fileExplorerController", controller);
     engine.rootContext()->setContextProperty("fileModel", fileModel);
 
     engine.load(url);
 
-    if (engine.rootObjects().isEmpty()) {
+    if (engine.rootObjects().isEmpty())
+    {
         return -1;
     }
 

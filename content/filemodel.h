@@ -8,7 +8,8 @@
 #include <exiv2/exiv2.hpp>
 #include <string>
 
-struct FileItem {
+struct FileItem
+{
     QString name;
     QString extension;
     QString path;
@@ -18,6 +19,10 @@ struct FileItem {
 class FileModel : public QAbstractListModel
 {
     Q_OBJECT
+
+    Q_PROPERTY(QList<FileItem> files READ getFiles NOTIFY filesChanged)
+    Q_PROPERTY(QVariantMap fileMetadata READ getFileMetadata NOTIFY fileMetadataChanged)
+    Q_PROPERTY(QString currentlyOpenedFilePath READ getCurrentlyOpenedFilePath NOTIFY currentlyOpenedFilePathChanged)
 
 public:
     explicit FileModel(QObject *parent = nullptr);
@@ -30,7 +35,8 @@ public:
     void readMeta(const QString &path);
     Q_INVOKABLE QVariantMap get(int index) const;
 
-    enum FileRoles {
+    enum FileRoles
+    {
         NameRole = Qt::UserRole + 1,
         ExtensionRole,
         PathRole,
@@ -38,14 +44,23 @@ public:
     };
     Q_ENUM(FileRoles)
 
+    QList<FileItem> getFiles() const;
+    QVariantMap getFileMetadata() const;
+    QString getCurrentlyOpenedFilePath() const;
+
 protected:
     QHash<int, QByteArray> roleNames() const override;
-
 
 private:
     QList<FileItem> files;
     QString currentlyOpenedFilePath;
-    QMap<QString, QString> fileMetadata;
+    QVariantMap fileMetadata;
+
+signals:
+
+    void filesChanged();
+    void fileMetadataChanged();
+    void currentlyOpenedFilePathChanged();
 };
 
 #endif // FILEMODEL_H

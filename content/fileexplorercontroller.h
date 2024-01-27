@@ -7,28 +7,27 @@
 
 class FileModel;
 
-class FileExplorerController: public QObject {
+class FileExplorerController : public QObject
+{
     Q_OBJECT
 
-    public:
-        explicit FileExplorerController(FileModel* model, QObject *parent = nullptr);
-    
-    public slots:
-        void CR(const QString& path);
-    
-    private:
+public:
+    explicit FileExplorerController(FileModel *model, QObject *parent = nullptr);
 
-        const QStringList IMAGES_FORMATS = {
-            ".jpg", ".png", ".tiff",
-            ".webp", ".xmp", ".gif",
-            ".bmp"
-        };
+public slots:
+    void CR(const QString &path);
 
-        FileModel *model;
-        QDir currentDirectory;
+private:
+    const QStringList IMAGES_FORMATS = {
+        ".jpg", ".png", ".tiff",
+        ".webp", ".xmp", ".gif",
+        ".bmp"};
 
-        void listFilesInDirectory();
-        bool isImage(const QString &fileName);
+    FileModel *model;
+    QDir currentDirectory;
+
+    void listFilesInDirectory();
+    bool isImage(const QString &fileName);
 };
 
 #endif // FILEEXPLORERCONTROLLER_H

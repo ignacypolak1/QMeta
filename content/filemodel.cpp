@@ -4,20 +4,27 @@
 
 FileModel::FileModel(QObject *parent)
     : QAbstractListModel(parent)
-{}
+{
+    this->currentlyOpenedFilePath = "";
+    this->fileMetadata = QVariantMap();
+    this->files = QList<FileItem>();
+}
 
-int FileModel::rowCount(const QModelIndex &parent) const {
-    if(parent.isValid())
+int FileModel::rowCount(const QModelIndex &parent) const
+{
+    if (parent.isValid())
         return 0;
     return files.size();
 }
 
-QVariant FileModel::data(const QModelIndex &index, int role) const {
-    if(!index.isValid() || index.row() >= files.size())
+QVariant FileModel::data(const QModelIndex &index, int role) const
+{
+    if (!index.isValid() || index.row() >= files.size())
         return QVariant();
 
     const FileItem &item = files.at(index.row());
-    switch(role) {
+    switch (role)
+    {
     case NameRole:
         return item.name;
     case ExtensionRole:
@@ -33,7 +40,8 @@ QVariant FileModel::data(const QModelIndex &index, int role) const {
     return QVariant();
 }
 
-QHash<int, QByteArray> FileModel::roleNames() const {
+QHash<int, QByteArray> FileModel::roleNames() const
+{
     QHash<int, QByteArray> roles;
     roles[NameRole] = "name";
     roles[ExtensionRole] = "extension";
@@ -42,25 +50,29 @@ QHash<int, QByteArray> FileModel::roleNames() const {
     return roles;
 }
 
-void FileModel::addFile(const FileItem &file) {
+void FileModel::addFile(const FileItem &file)
+{
     beginInsertRows(QModelIndex(), files.size(), files.size());
     files.append(file);
     endInsertRows();
 }
 
-void FileModel::removeFile(int index) {
+void FileModel::removeFile(int index)
+{
     beginRemoveRows(QModelIndex(), index, index);
     files.removeAt(index);
     endRemoveRows();
 }
 
-void FileModel::clearFiles() {
+void FileModel::clearFiles()
+{
     beginRemoveRows(QModelIndex(), 0, files.size() - 1);
     files.clear();
     endRemoveRows();
 }
 
-QVariantMap FileModel::get(int index) const {
+QVariantMap FileModel::get(int index) const
+{
     if (index < 0 || index >= files.size())
         return QVariantMap();
     const FileItem &item = files.at(index);
@@ -72,41 +84,67 @@ QVariantMap FileModel::get(int index) const {
     return map;
 }
 
-void FileModel::readMeta(const QString &path) {
+void FileModel::readMeta(const QString &path)
+{
 
-    QMap<QString, QString> exifMap;
+    QVariantMap exifMap;
 
     QFileInfo fileInfo(path);
     std::string filePath = path.toStdString();
 
-    if(fileInfo.exists() && fileInfo.isFile()) {
+    if (fileInfo.exists() && fileInfo.isFile())
+    {
         currentlyOpenedFilePath = path;
     }
 
-    try {
+    try
+    {
         Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(filePath);
-        if(!image) {
+        if (!image)
+        {
             std::cerr << "Can't open file: " << filePath << std::endl;
             return;
         }
         image->readMetadata();
 
         Exiv2::ExifData &exifData = image->exifData();
-        if(exifData.empty()) {
+        if (exifData.empty())
+        {
             std::cerr << "No metadata in file: " << filePath << std::endl;
             return;
         }
 
-        for(const auto &metadata: exifData) {
+        for (const auto &metadata : exifData)
+        {
             exifMap[QString::fromStdString(metadata.key())] = QString::fromStdString(metadata.value().toString());
         }
 
-        if(exifMap.isEmpty()) {
+        if (exifMap.isEmpty())
+        {
             return;
-        } else {
+        }
+        else
+        {
             this->fileMetadata = exifMap;
         }
-    } catch (...) {
+    }
+    catch (...)
+    {
         return;
     }
+}
+
+QList<FileItem> FileModel::getFiles() const
+{
+    return this->files;
+}
+
+QVariantMap FileModel::getFileMetadata() const
+{
+    return this->fileMetadata;
+}
+
+QString FileModel::getCurrentlyOpenedFilePath() const
+{
+    return this->currentlyOpenedFilePath;
 }
