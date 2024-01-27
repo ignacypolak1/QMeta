@@ -86,14 +86,14 @@ void FileModel::readMeta(const QString &path) {
     try {
         Exiv2::Image::UniquePtr image = Exiv2::ImageFactory::open(filePath);
         if(!image) {
-            std::cerr << "Nie można otworzyć pliku: " << filePath << std::endl;
+            std::cerr << "Can't open file: " << filePath << std::endl;
             return;
         }
         image->readMetadata();
 
         Exiv2::ExifData &exifData = image->exifData();
         if(exifData.empty()) {
-            std::cerr << "Brak metadanych w pliku: " << filePath << std::endl;
+            std::cerr << "No metadata in file: " << filePath << std::endl;
             return;
         }
 

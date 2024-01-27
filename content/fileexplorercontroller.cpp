@@ -8,14 +8,37 @@ FileExplorerController::FileExplorerController(FileModel *model, QObject *parent
     listFilesInDirectory();
 }
 
+bool FileExplorerController::isImage(const QString &fileName) {
+    for(const QString &format: IMAGES_FORMATS) {
+        if(fileName.endsWith(format, Qt::CaseSensitive)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void FileExplorerController::CR(const QString& path) {
-    QDir newDir(path);
-    if (!newDir.exists()) {
+    QFileInfo fileInfo(path);
+
+    if (!fileInfo.exists()) {
         return;
     }
-    
-    currentDirectory = newDir;
-    listFilesInDirectory();
+
+    if(fileInfo.isDir()) {
+
+        currentDirectory = QDir(path);
+        listFilesInDirectory();    
+
+    } else if (fileInfo.isFile()) {
+        
+        QFile file(path);
+
+        if(isImage(file.fileName())) {
+            model->readMeta(path);
+        } else {
+            return;
+        }
+    }
 }
 
 void FileExplorerController::listFilesInDirectory() {

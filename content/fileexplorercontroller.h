@@ -17,10 +17,18 @@ class FileExplorerController: public QObject {
         void CR(const QString& path);
     
     private:
+
+        const QStringList IMAGES_FORMATS = {
+            ".jpg", ".png", ".tiff",
+            ".webp", ".xmp", ".gif",
+            ".bmp"
+        };
+
         FileModel *model;
         QDir currentDirectory;
 
         void listFilesInDirectory();
+        bool isImage(const QString &fileName);
 };
 
 #endif // FILEEXPLORERCONTROLLER_H
