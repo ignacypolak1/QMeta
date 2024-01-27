@@ -54,4 +54,7 @@ compile_commands.json
 # Build directory
 /build
 
+# Other
+/.vscode
+
 *_qmlcache.qrc
