@@ -1,3 +1,3 @@
-# QMeta
+# QMeta Browser
 
 ![](img.png)
