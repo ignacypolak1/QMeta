@@ -1,6 +1,7 @@
 // Copyright (C) 2021 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR GPL-3.0-only
 
+import Qt.labs.platform
 import QtQuick 6.2
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -194,6 +195,21 @@ Window {
                                         height: parent.height
                                         anchors.left: flickableElement.right
                                         anchors.right: parent.right
+
+                                        TextEdit {
+                                            id: textEdit
+
+                                            visible: false
+                                        }
+
+                                        MouseArea {
+                                            anchors.fill: parent
+                                            onClicked: {
+                                                textEdit.text = value;
+                                                textEdit.selectAll();
+                                                textEdit.copy();
+                                            }
+                                        }
 
                                         background: Rectangle {
                                             anchors.fill: parent
