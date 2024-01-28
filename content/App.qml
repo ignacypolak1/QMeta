@@ -112,7 +112,7 @@ Window {
                             } else if (event.key === Qt.Key_Space) {
                                 var selectedItem = fileModel.get(fileListView.currentIndex);
                                 if (selectedItem) {
-                                    fileExplorerController.CR(selectedItem.path);
+                                    controller.CR(selectedItem.path);
                                 }
                                 event.accepted = true;
                             }
