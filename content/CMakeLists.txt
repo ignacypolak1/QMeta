@@ -11,6 +11,8 @@ qt6_add_qml_module(content
         Screen01.ui.qml
     RESOURCES
         fonts/fonts.txt
+        assets/clipboard-regular.svg
+
         SOURCES filemodel.h filemodel.cpp
         SOURCES metamodel.h metamodel.cpp
         SOURCES controller.h controller.cpp

@@ -166,6 +166,8 @@ Window {
                                     color: "transparent"
 
                                     Flickable {
+                                        id: flickableElement
+
                                         width: parent.width - 60
                                         height: parent.height
                                         contentWidth: textElement.width
@@ -176,11 +178,36 @@ Window {
                                         anchors.leftMargin: 20
 
                                         Text {
+                                            id: textElement
+
                                             text: value
                                             anchors.left: parent.left
                                             color: "white"
                                             anchors.verticalCenter: parent.verticalCenter
                                             anchors.horizontalCenter: parent.horizontalCenter
+                                        }
+
+                                    }
+
+                                    Button {
+                                        width: 60
+                                        height: parent.height
+                                        anchors.left: flickableElement.right
+                                        anchors.right: parent.right
+
+                                        background: Rectangle {
+                                            anchors.fill: parent
+                                            anchors.centerIn: parent
+                                            color: "transparent"
+
+                                            Image {
+                                                anchors.centerIn: parent
+                                                source: "assets/clipboard-regular.svg"
+                                                width: 20
+                                                height: 20
+                                                fillMode: Image.PreserveAspectFit
+                                            }
+
                                         }
 
                                     }

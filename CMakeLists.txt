@@ -8,6 +8,7 @@ option(BUILD_QDS_COMPONENTS "Build design studio components" ON)
 project(qMetaApp LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 find_package(Qt6 6.2 REQUIRED COMPONENTS Core Gui Qml Quick)
 
