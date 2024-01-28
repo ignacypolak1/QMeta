@@ -209,6 +209,12 @@ Window {
                                                 textEdit.selectAll();
                                                 textEdit.copy();
                                             }
+                                            onEntered: {
+                                                copyIcon.opacity = 0.6;
+                                            }
+                                            onExited: {
+                                                copyIcon.opacity = 1;
+                                            }
                                         }
 
                                         background: Rectangle {
@@ -217,6 +223,8 @@ Window {
                                             color: "transparent"
 
                                             Image {
+                                                id: copyIcon
+
                                                 anchors.centerIn: parent
                                                 source: "assets/clipboard-regular.svg"
                                                 width: 20
