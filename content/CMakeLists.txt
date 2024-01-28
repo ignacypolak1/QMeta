@@ -12,5 +12,6 @@ qt6_add_qml_module(content
     RESOURCES
         fonts/fonts.txt
         SOURCES filemodel.h filemodel.cpp
-        SOURCES fileexplorercontroller.h fileexplorercontroller.cpp
+        SOURCES metamodel.h metamodel.cpp
+        SOURCES controller.h controller.cpp
 )

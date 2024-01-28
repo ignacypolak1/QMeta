@@ -9,8 +9,9 @@
 #include "import_qml_plugins.h"
 #include "QQmlContext"
 
+#include "content/controller.h"
 #include "content/filemodel.h"
-#include "content/fileexplorercontroller.h"
+#include "content/metamodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -35,10 +36,12 @@ int main(int argc, char *argv[])
     engine.addImportPath(":/");
 
     FileModel *fileModel = new FileModel();
-    FileExplorerController *controller = new FileExplorerController(fileModel);
+    MetaModel *metaModel = new MetaModel();
+    Controller *controller = new Controller(fileModel, metaModel);
 
-    engine.rootContext()->setContextProperty("fileExplorerController", controller);
+    engine.rootContext()->setContextProperty("controller", controller);
     engine.rootContext()->setContextProperty("fileModel", fileModel);
+    engine.rootContext()->setContextProperty("metaModel", metaModel);
 
     engine.load(url);
 

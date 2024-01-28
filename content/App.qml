@@ -137,10 +137,12 @@ Window {
                         }
 
                         Component.onCompleted: {
-                            var metadata = fileModel.fileMetadata
+                            var metadata = fileModel.getFileMetadata()
                             for (var key in metadata) {
                                 metadataModel.append({"key": key,"value": metadata[key]})
                             }
+                            console.log("xDDDDD")
+                            console.log(JSON.stringify(metadata, null, 4))
                         }
 
                         delegate: Rectangle {
