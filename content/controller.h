@@ -39,6 +39,7 @@ private:
     void listFilesInDirectory();
     bool isImage(const QString &fileName);
     void readMeta(const QString &path);
+    std::string trim(std::string str);
 };
 
 #endif // CONTROLLER_H

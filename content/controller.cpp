@@ -41,11 +41,10 @@ void Controller::CR(const QString &path)
 
         if (isImage(file.fileName()))
         {
-            // TODO: Implement logic for metadata reading and setting current file
+            readMeta(path);
         }
         else
         {
-            // TODO: Implement logic for unsupported file extensions
             return;
         }
     }
@@ -75,6 +74,19 @@ void Controller::listFilesInDirectory()
         item.extension = fileInfo.isDir() ? "/" : fileInfo.suffix();
         fileModel->addItem(item);
     }
+}
+
+std::string Controller::trim(std::string s)
+{
+    s.erase(s.begin(), std::find_if_not(s.begin(), s.end(), [](unsigned char ch)
+                                        { return std::isspace(ch); }));
+
+    s.erase(std::find_if_not(s.rbegin(), s.rend(), [](unsigned char ch)
+                             { return std::isspace(ch); })
+                .base(),
+            s.end());
+
+    return s;
 }
 
 void Controller::readMeta(const QString &path)
@@ -114,8 +126,8 @@ void Controller::readMeta(const QString &path)
         {
             MetaItem item;
 
-            item.key = QString::fromStdString(metadata.key());
-            item.value = QString::fromStdString(metadata.value().toString());
+            item.key = QString::fromStdString(trim(metadata.key()));
+            item.value = QString::fromStdString(trim(metadata.value().toString()));
 
             this->metaModel->addItem(item);
         }

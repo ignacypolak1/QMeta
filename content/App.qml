@@ -7,156 +7,186 @@ import QtQuick.Layouts
 
 Window {
     id: mainWindow
+
     visible: true
-    width: 600
+    width: 1200
     height: 600
     title: "FileExplorer"
     flags: Qt.FramelessWindowHint
     color: "transparent"
 
     ColumnLayout {
-          anchors.fill: parent
-          spacing: 0
+        anchors.fill: parent
+        spacing: 0
 
-          Rectangle {
-              color: Qt.rgba(0,0,0,0.7)
-              Layout.fillWidth: true
-              Layout.preferredHeight: 30
-              border.color: Qt.rgba(0.549,0.549,0.549,0.6)
-              border.width: 1
+        Rectangle {
+            color: Qt.rgba(0, 0, 0, 0.7)
+            Layout.fillWidth: true
+            Layout.preferredHeight: 30
+            border.color: Qt.rgba(0.549, 0.549, 0.549, 0.6)
+            border.width: 1
 
-              Text {
-                  color: Qt.rgba(0.2,0.2,1,0.7)
-                  text: "<b>qMeta</b>"
-                  font.pointSize: 15
-                  font.family: ""
-                  anchors.verticalCenter: parent.verticalCenter
-                  anchors.horizontalCenter: parent.horizontalCenter
-              }
+            MouseArea {
+                id: dragArea
 
-              MouseArea {
-                  id: dragArea
-                  anchors.fill: parent
-                  property point clickPos
+                property point clickPos
 
-                  onPressed: function(mouse) {
-                      clickPos = Qt.point(mouse.x, mouse.y)
-                  }
+                anchors.fill: parent
+                onPressed: function(mouse) {
+                    clickPos = Qt.point(mouse.x, mouse.y);
+                }
+                onPositionChanged: function(mouse) {
+                    if (mouse.buttons & Qt.LeftButton) {
+                        mainWindow.x += mouse.x - clickPos.x;
+                        mainWindow.y += mouse.y - clickPos.y;
+                    }
+                }
+            }
 
-                  onPositionChanged: function(mouse) {
-                      if (mouse.buttons & Qt.LeftButton) {
-                          mainWindow.x += mouse.x - clickPos.x
-                          mainWindow.y += mouse.y - clickPos.y
-                      }
-                  }
-              }
-          }
+        }
 
-          Rectangle {
-              color: Qt.rgba(0,0,0,0.5)
-              Layout.fillWidth: true
-              Layout.fillHeight: true
+        Rectangle {
+            color: Qt.rgba(0, 0, 0, 0.5)
+            Layout.fillWidth: true
+            Layout.fillHeight: true
 
-              RowLayout {
-                  anchors.fill: parent
-                  spacing: 0
+            RowLayout {
+                anchors.fill: parent
+                spacing: 0
 
+                Rectangle {
+                    id: fileSelectionPanel
 
-                  Rectangle {
-                      id: fileSelectionPanel
-                      Layout.fillHeight: true
-                      Layout.fillWidth: true
-                      Layout.preferredWidth: 2
-                      color: Qt.rgba(0,0,0,0.3)
-                      border.color: Qt.rgba(0.549,0.549,0.549,0.6)
-                      border.width: 1
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    Layout.preferredWidth: 2
+                    color: Qt.rgba(0, 0, 0, 0.3)
+                    border.color: Qt.rgba(0.549, 0.549, 0.549, 0.6)
+                    border.width: 1
 
-                      ListView {
-                          id: fileListView
-                          anchors.fill: parent
-                          model: fileModel
-                          focus: true
+                    ListView {
+                        id: fileListView
 
-                          delegate: Rectangle {
-                              width: parent.width
-                              height: 30
-                              color: ListView.isCurrentItem ? Qt.rgba(0,0,0.6,0.6) : Qt.rgba(0,0,0,0.3)
-                              border.color: Qt.rgba(0.549,0.549,0.549,0.6)
-                              border.width: 1
-
-                              Row {
-                                  anchors.verticalCenter: parent.verticalCenter
-                                  anchors.horizontalCenter: parent.horizontalCenter
-                                  spacing: 0
-                                  leftPadding: 5
-
-                                  Text {
-                                      text: name
-                                      color: "white"
-                                  }
-
-                              }
-                          }
-
+                        anchors.fill: parent
+                        model: fileModel
+                        focus: true
                         Keys.onPressed: (event) => {
                             if (event.key === Qt.Key_W || event.key === Qt.Key_Up) {
-                                if(currentIndex > 0) {
+                                if (currentIndex > 0)
                                     currentIndex--;
-                                }
-                                event.accepted = true
+
+                                event.accepted = true;
                             } else if (event.key === Qt.Key_S || event.key === Qt.Key_Down) {
-                                if(currentIndex < count - 1) {
+                                if (currentIndex < count - 1)
                                     currentIndex++;
-                                }
-                                event.accepted = true
+
+                                event.accepted = true;
                             } else if (event.key === Qt.Key_Space) {
                                 var selectedItem = fileModel.get(fileListView.currentIndex);
-                                if (selectedItem) {
+                                if (selectedItem)
                                     controller.CR(selectedItem.path);
-                                }
+
                                 event.accepted = true;
                             }
-                        }
-                      }
-                  }
-
-                  Rectangle {
-                      id: fileViewerPanel
-                      Layout.fillHeight: true
-                      Layout.fillWidth: true
-                      Layout.preferredWidth: 3
-                      color: Qt.rgba(0,0,0,0.2)
-                      border.color: Qt.rgba(0.549,0.549,0.549,0.6)
-                      border.width: 1
-
-                      ListView {
-                        id: metadataListView
-                        anchors.fill: parent
-                        model: ListModel {
-                            id: metadataModel
-                        }
-
-                        Component.onCompleted: {
-                            var metadata = fileModel.getFileMetadata()
-                            for (var key in metadata) {
-                                metadataModel.append({"key": key,"value": metadata[key]})
-                            }
-                            console.log("xDDDDD")
-                            console.log(JSON.stringify(metadata, null, 4))
                         }
 
                         delegate: Rectangle {
                             width: parent.width
                             height: 30
-                            Row {
-                                Text { text: model.key + ": " }
-                                Text { text: model.value }
-                            }
-                        }
-                      }
-                  }
-              }
-          }
-      }
-}
+                            color: ListView.isCurrentItem ? Qt.rgba(0, 0, 0.6, 0.6) : Qt.rgba(0, 0, 0, 0.3)
+                            border.color: Qt.rgba(0.549, 0.549, 0.549, 0.6)
+                            border.width: 1
 
+                            Row {
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                spacing: 0
+                                leftPadding: 5
+
+                                Text {
+                                    text: name
+                                    color: "white"
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                Rectangle {
+                    id: fileViewerPanel
+
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    Layout.preferredWidth: 3
+                    color: Qt.rgba(0, 0, 0, 0.2)
+                    border.color: Qt.rgba(0.549, 0.549, 0.549, 0.6)
+                    border.width: 1
+
+                    ListView {
+                        id: metaListView
+
+                        anchors.fill: parent
+                        model: metaModel
+                        focus: true
+
+                        delegate: Item {
+                            width: parent.width
+                            height: 30
+
+                            Row {
+                                anchors.fill: parent
+                                spacing: 0
+
+                                Rectangle {
+                                    width: parent.width / 2
+                                    height: parent.height
+                                    border.color: "grey"
+                                    border.width: 1
+                                    color: "transparent"
+
+                                    Text {
+                                        text: key
+                                        anchors.centerIn: parent
+                                        color: "white"
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                    }
+
+                                }
+
+                                Rectangle {
+                                    width: parent.width / 2
+                                    height: parent.height
+                                    border.color: "grey"
+                                    border.width: 1
+                                    color: "transparent"
+
+                                    Text {
+                                        text: value
+                                        anchors.centerIn: parent
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        color: "white"
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+}
