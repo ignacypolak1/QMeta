@@ -142,7 +142,7 @@ Window {
                                 spacing: 0
 
                                 Rectangle {
-                                    width: parent.width / 2
+                                    width: parent.width / 2 - 90
                                     height: parent.height
                                     border.color: "grey"
                                     border.width: 1
@@ -159,18 +159,30 @@ Window {
                                 }
 
                                 Rectangle {
-                                    width: parent.width / 2
+                                    width: parent.width / 2 + 90
                                     height: parent.height
                                     border.color: "grey"
                                     border.width: 1
                                     color: "transparent"
 
-                                    Text {
-                                        text: value
-                                        anchors.centerIn: parent
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        anchors.horizontalCenter: parent.horizontalCenter
-                                        color: "white"
+                                    Flickable {
+                                        width: parent.width - 60
+                                        height: parent.height
+                                        contentWidth: textElement.width
+                                        contentHeight: height
+                                        flickableDirection: Flickable.HorizontalFlick
+                                        clip: true
+                                        anchors.left: parent.left
+                                        anchors.leftMargin: 20
+
+                                        Text {
+                                            text: value
+                                            anchors.left: parent.left
+                                            color: "white"
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            anchors.horizontalCenter: parent.horizontalCenter
+                                        }
+
                                     }
 
                                 }
