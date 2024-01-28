@@ -203,6 +203,7 @@ Window {
                                         }
 
                                         MouseArea {
+                                            hoverEnabled: true
                                             anchors.fill: parent
                                             onClicked: {
                                                 textEdit.text = value;
