@@ -209,6 +209,7 @@ Window {
                                                 textEdit.text = value;
                                                 textEdit.selectAll();
                                                 textEdit.copy();
+                                                mapLoader.source = "MetaMap.qml";
                                             }
                                             onEntered: {
                                                 copyIcon.opacity = 0.6;
@@ -216,6 +217,10 @@ Window {
                                             onExited: {
                                                 copyIcon.opacity = 1;
                                             }
+                                        }
+
+                                        Loader {
+                                            id: mapLoader
                                         }
 
                                         background: Rectangle {

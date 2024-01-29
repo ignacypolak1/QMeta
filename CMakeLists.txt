@@ -2,6 +2,8 @@ include(FetchContent)
 
 cmake_minimum_required(VERSION 3.21.1)
 
+set(CMAKE_PREFIX_PATH "/home/plck/Qt/6.7.0/gcc_64" ${CMAKE_PREFIX_PATH})
+
 option(LINK_INSIGHT "Link Qt Insight Tracker library" ON)
 option(BUILD_QDS_COMPONENTS "Build design studio components" ON)
 
@@ -10,7 +12,7 @@ project(qMetaApp LANGUAGES CXX)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt6 6.2 REQUIRED COMPONENTS Core Gui Qml Quick)
+find_package(Qt6 6.7 REQUIRED COMPONENTS Core Gui Qml Quick Location)
 
 if (Qt6_VERSION VERSION_GREATER_EQUAL 6.3)
     qt_standard_project_setup()
@@ -41,6 +43,7 @@ target_link_libraries(qMetaApp
         Qt6::Gui
         Qt6::Qml
         Qt6::Quick
+        Qt6::Location
 )
 
 if (BUILD_QDS_COMPONENTS)

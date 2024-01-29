@@ -40,6 +40,8 @@ private:
     bool isImage(const QString &fileName);
     void readMeta(const QString &path);
     std::string trim(std::string str);
+    bool canExtractGPSCoords(const QStringList &keys, QMap<QString, QString> &map);
+    QPointF convertGPSValuesToCoords(QString latRef, QString lat, QString lonRef, QString lon);
 };
 
 #endif // CONTROLLER_H

@@ -82,3 +82,14 @@ QHash<int, QByteArray> MetaModel::roleNames() const
     roles[ValueRole] = "value";
     return roles;
 }
+
+QPointF MetaModel::getCoordinates() const
+{
+    return this->coordinates;
+}
+
+void MetaModel::setCoordinates(float x, float y)
+{
+    this->coordinates.setX(x);
+    this->coordinates.setX(y);
+}

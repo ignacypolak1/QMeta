@@ -8,6 +8,7 @@ qt6_add_qml_module(content
     RESOURCE_PREFIX "/qt/qml"
     QML_FILES
         App.qml
+        MetaMap.qml
         Screen01.ui.qml
     RESOURCES
         fonts/fonts.txt

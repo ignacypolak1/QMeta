@@ -89,6 +89,50 @@ std::string Controller::trim(std::string s)
     return s;
 }
 
+bool Controller::canExtractGPSCoords(const QStringList &keys, QMap<QString, QString> &map)
+{
+    const QList<MetaItem> metaItems = metaModel->getItems();
+    for (const QString &key : keys)
+    {
+        bool found = false;
+        for (const MetaItem &item : metaItems)
+        {
+            if (item.key == key)
+            {
+                found = true;
+                map[key] = item.value;
+                break;
+            }
+        }
+        if (!found)
+            return false;
+    }
+    return true;
+}
+
+QPointF Controller::convertGPSValuesToCoords(QString latRef, QString lat, QString lonRef, QString lon)
+{
+    auto dmsToDecimal = [](const QString &dms) -> float
+    {
+        QStringList parts = dms.split(' ');
+        float degrees = parts[0].split("/")[0].toDouble() / parts[0].split('/')[1].toDouble();
+        float minutes = parts[1].split("/")[0].toDouble() / parts[1].split('/')[1].toDouble();
+        float seconds = parts[2].split("/")[0].toDouble() / parts[2].split('/')[1].toDouble();
+
+        return degrees + (minutes / 60.0) + (seconds / 3600.0);
+    };
+
+    float latFloat = dmsToDecimal(lat);
+    float lonFloat = dmsToDecimal(lon);
+
+    if (latRef == "S")
+        latFloat *= -1;
+    if (latRef == "W")
+        lonFloat *= -1;
+
+    return QPointF(lonFloat, latFloat);
+}
+
 void Controller::readMeta(const QString &path)
 {
 
@@ -130,6 +174,25 @@ void Controller::readMeta(const QString &path)
             item.value = QString::fromStdString(trim(metadata.value().toString()));
 
             this->metaModel->addItem(item);
+        }
+
+        QStringList requiredKeys = {
+            "Exif.GPSInfo.GPSLatitudeRef",
+            "Exif.GPSInfo.GPSLatitude",
+            "Exif.GPSInfo.GPSLongitudeRef",
+            "Exif.GPSInfo.GPSLongitude"};
+
+        QMap<QString, QString> tempMap;
+
+        if (canExtractGPSCoords(requiredKeys, tempMap))
+        {
+            QPointF coords = convertGPSValuesToCoords(
+                tempMap["Exif.GPSInfo.GPSLatitudeRef"],
+                tempMap["Exif.GPSInfo.GPSLatitude"],
+                tempMap["Exif.GPSInfo.GPSLongitudeRef"],
+                tempMap["Exif.GPSInfo.GPSLongitude"]);
+
+            metaModel->setCoordinates(coords.x(), coords.y());
         }
     }
     catch (...)
