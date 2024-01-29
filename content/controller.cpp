@@ -130,7 +130,7 @@ QPointF Controller::convertGPSValuesToCoords(QString latRef, QString lat, QStrin
     if (latRef == "W")
         lonFloat *= -1;
 
-    return QPointF(lonFloat, latFloat);
+    return QPointF(latFloat, lonFloat);
 }
 
 void Controller::readMeta(const QString &path)
@@ -191,7 +191,6 @@ void Controller::readMeta(const QString &path)
                 tempMap["Exif.GPSInfo.GPSLatitude"],
                 tempMap["Exif.GPSInfo.GPSLongitudeRef"],
                 tempMap["Exif.GPSInfo.GPSLongitude"]);
-
             metaModel->setCoordinates(coords.x(), coords.y());
         }
     }

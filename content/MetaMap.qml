@@ -4,8 +4,8 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 
 Window {
-    property double latitude: 53.4285
-    property double longitude: 14.5528
+    property double latitude
+    property double longitude
 
     visible: true
     width: 800

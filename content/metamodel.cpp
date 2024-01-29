@@ -91,5 +91,5 @@ QPointF MetaModel::getCoordinates() const
 void MetaModel::setCoordinates(float x, float y)
 {
     this->coordinates.setX(x);
-    this->coordinates.setX(y);
+    this->coordinates.setY(y);
 }

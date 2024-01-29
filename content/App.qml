@@ -209,6 +209,8 @@ Window {
                                                 textEdit.text = value;
                                                 textEdit.selectAll();
                                                 textEdit.copy();
+                                                mapLoader.latitude = metaModel.getCoordinates().x;
+                                                mapLoader.longitude = metaModel.getCoordinates().y;
                                                 mapLoader.source = "MetaMap.qml";
                                             }
                                             onEntered: {
@@ -221,6 +223,14 @@ Window {
 
                                         Loader {
                                             id: mapLoader
+
+                                            property double longitude
+                                            property double latitude
+
+                                            onLoaded: {
+                                                item.longitude = longitude;
+                                                item.latitude = latitude;
+                                            }
                                         }
 
                                         background: Rectangle {
