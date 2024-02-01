@@ -1,5 +1,5 @@
-import QtLocation 6.6
-import QtPositioning
+import QtLocation 6.7
+import QtPositioning 6.7
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 
@@ -17,6 +17,26 @@ Window {
 
         anchors.fill: parent
         center: QtPositioning.coordinate(latitude, longitude)
+
+        DragHandler {
+            id: drag
+
+            target: null
+            onTranslationChanged: (delta) => {
+                return map.pan(-delta.x, -delta.y);
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onWheel: {
+                var scale = 0.5;
+                if (wheel.angleDelta.y > 0)
+                    map.zoomLevel = Math.min(map.zoomLevel + scale, map.maximumZoomLevel);
+                else
+                    map.zoomLevel = Math.max(map.zoomLevel - scale, map.minimumZoomLevel);
+            }
+        }
 
         MapQuickItem {
             coordinate: QtPositioning.coordinate(latitude, longitude)

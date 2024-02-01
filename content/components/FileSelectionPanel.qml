@@ -20,9 +20,6 @@ RowLayout {
         ListView {
             id: fileListView
 
-            anchors.fill: parent
-            model: fileModel
-            focus: true
             Keys.onPressed: (event) => {
                 if (event.key === Qt.Key_W || event.key === Qt.Key_Up) {
                     if (currentIndex > 0)
@@ -42,6 +39,9 @@ RowLayout {
                     event.accepted = true;
                 }
             }
+            anchors.fill: parent
+            model: fileModel
+            focus: true
 
             delegate: Rectangle {
                 width: parent.width
