@@ -6,28 +6,34 @@ import QtQuick.Layouts
 Button {
     width: 40
     height: parent.height
-    anchors.left: mapButton.right
-    anchors.right: parent.right
-
-    TextEdit {
-        id: textEdit
-
-        visible: false
-    }
+    anchors.left: flickableElement.right
+    anchors.right: mapButton.right
 
     MouseArea {
         hoverEnabled: true
         anchors.fill: parent
         onClicked: {
-            textEdit.text = value;
-            textEdit.selectAll();
-            textEdit.copy();
+            mapLoader.latitude = metaModel.getCoordinates().x;
+            mapLoader.longitude = metaModel.getCoordinates().y;
+            mapLoader.source = "MetaMap.qml";
         }
         onEntered: {
             copyIcon.opacity = 0.6;
         }
         onExited: {
             copyIcon.opacity = 1;
+        }
+    }
+
+    Loader {
+        id: mapLoader
+
+        property double longitude
+        property double latitude
+
+        onLoaded: {
+            item.longitude = longitude;
+            item.latitude = latitude;
         }
     }
 
@@ -40,7 +46,7 @@ Button {
             id: copyIcon
 
             anchors.centerIn: parent
-            source: "../assets/clipboard-regular.svg"
+            source: "../assets/map-regular.svg"
             width: 20
             height: 20
             fillMode: Image.PreserveAspectFit

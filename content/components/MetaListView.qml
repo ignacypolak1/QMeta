@@ -45,7 +45,7 @@ ListView {
                 Flickable {
                     id: flickableElement
 
-                    width: parent.width - 60
+                    width: parent.width - 80
                     height: parent.height
                     contentWidth: textElement.width
                     contentHeight: height
@@ -64,6 +64,12 @@ ListView {
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
+                }
+
+                MapButton {
+                    id: mapButton
+
+                    visible: key.startsWith("Exif.GPSInfo")
                 }
 
                 CopyButton {

@@ -10,6 +10,7 @@ qt6_add_qml_module(content
         App.qml
         components/MetaMap.qml
         components/CopyButton.qml
+        components/MapButton.qml
         components/MetaListView.qml
         components/MetaViewPanel.qml
         components/FileSelectionPanel.qml
@@ -17,6 +18,7 @@ qt6_add_qml_module(content
     RESOURCES
         fonts/fonts.txt
         assets/clipboard-regular.svg
+        assets/map-regular.svg
 
         SOURCES src/filemodel.h src/filemodel.cpp
         SOURCES src/metamodel.h src/metamodel.cpp

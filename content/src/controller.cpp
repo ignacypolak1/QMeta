@@ -143,6 +143,7 @@ void Controller::readMeta(const QString &path)
 
     if (fileInfo.exists() && fileInfo.isFile())
     {
+        metaModel->clearItems();
         this->currentFile = path;
     }
 
