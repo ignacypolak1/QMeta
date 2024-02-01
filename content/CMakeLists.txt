@@ -8,13 +8,17 @@ qt6_add_qml_module(content
     RESOURCE_PREFIX "/qt/qml"
     QML_FILES
         App.qml
-        MetaMap.qml
+        components/MetaMap.qml
+        components/CopyButton.qml
+        components/MetaListView.qml
+        components/MetaViewPanel.qml
+        components/FileSelectionPanel.qml
         Screen01.ui.qml
     RESOURCES
         fonts/fonts.txt
         assets/clipboard-regular.svg
 
-        SOURCES filemodel.h filemodel.cpp
-        SOURCES metamodel.h metamodel.cpp
-        SOURCES controller.h controller.cpp
+        SOURCES src/filemodel.h src/filemodel.cpp
+        SOURCES src/metamodel.h src/metamodel.cpp
+        SOURCES src/controller.h src/controller.cpp
 )

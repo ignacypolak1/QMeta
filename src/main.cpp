@@ -9,9 +9,9 @@
 #include "import_qml_plugins.h"
 #include "QQmlContext"
 
-#include "content/controller.h"
-#include "content/filemodel.h"
-#include "content/metamodel.h"
+#include "content/src/controller.h"
+#include "content/src/filemodel.h"
+#include "content/src/metamodel.h"
 
 int main(int argc, char *argv[])
 {
